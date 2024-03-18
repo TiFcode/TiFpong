@@ -1,6 +1,10 @@
 
 # PROGRAM: TiFpong
 
+# initialized on 17-MAR-2024 using Google Gemini Advanced prompt:
+# "write minimal code to play pong in graphics mode 
+# (human player versus computer player)"
+
 import pygame
 import random
 
@@ -12,7 +16,7 @@ pygame.init()
 width = 600
 height = 400
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Minimal Pong")
+pygame.display.set_caption("TiFpong - version 2024-03-18--08-16")
 
 # Colors
 black = (0, 0, 0)
@@ -26,8 +30,8 @@ player_score = 0  # Initialize player_score
 computer_score = 0  # Initialize computer_score
 
 # Paddle settings
-paddle_width = 15
-paddle_height = 80
+paddle_width = 10
+paddle_height = 40
 
 # Player paddle
 player_x = 10
@@ -76,12 +80,6 @@ while running:
     ball_x += ball_speed_x
     ball_y += ball_speed_y
 
-    # Basic AI (move towards ball)
-    # if computer_y + paddle_height//2 < ball_y:
-    #     computer_speed = 7
-    # elif computer_y + paddle_height//2 > ball_y:
-    #     computer_speed = -7
-        
     # Basic AI with randomness and delay
     if computer_reaction_delay > 0:
         computer_reaction_delay -= 1
@@ -95,14 +93,11 @@ while running:
         computer_reaction_delay = computer_reaction_delay_maximum  # Reset the delay
 
     # Collision and bounce 
-    # (Add more refined collision handling for accurate bounces)
+    # (TODO: Add more refined collision handling for accurate bounces)
     if ball_y <= 0 or ball_y + ball_radius >= height:
         ball_speed_y *= -1
     if ball_x <= 0 or ball_x + ball_radius >= width:
-        ball_speed_x *= -1  
-      #      ball_x = width // 2  # Reset ball on score
-      #      ball_y = height // 2
-        
+        ball_speed_x *= -1          
     
     # Collision with paddles
     if ball_x - ball_radius <= player_x + paddle_width and \
@@ -125,7 +120,6 @@ while running:
         ball_y = height // 2
         ball_speed_x *= -1 
   
-
     # Keep paddles within screen bounds
     if player_y < 0:
         player_y = 0
@@ -135,14 +129,12 @@ while running:
 
     # Drawing
     screen.fill(black)  # Clear the screen
-    
-    
+        
     # Draw scores
     player_score_text = score_font.render(str(player_score), True, white)
     computer_score_text = score_font.render(str(computer_score), True, white)
     screen.blit(player_score_text, (20, 10))
     screen.blit(computer_score_text, (width - player_score_text.get_width() - 20, 10))
-
 
     # Draw paddles
     pygame.draw.rect(screen, white, (player_x, player_y, paddle_width, paddle_height))
